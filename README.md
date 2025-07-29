@@ -63,7 +63,17 @@ An intelligent AI-powered support system that combines local document search wit
    ```
 
 4. **Set up environment variables**
-   Create a `.env` file with:
+   Run the setup script to create your environment file:
+   ```bash
+   python create_env.py
+   ```
+   
+   Or manually create a `.env.local` file from the template:
+   ```bash
+   cp env.local.template .env.local
+   ```
+   
+   Then edit `.env.local` with your actual API keys:
    ```
    GEMINI_API_KEY=your_gemini_api_key_here
    FIREBASE_API_KEY=your_firebase_api_key_here
@@ -72,7 +82,10 @@ An intelligent AI-powered support system that combines local document search wit
    FIREBASE_STORAGE_BUCKET=your_project.appspot.com
    FIREBASE_MESSAGING_SENDER_ID=your_sender_id
    FIREBASE_APP_ID=your_app_id
+   FIREBASE_MEASUREMENT_ID=your_measurement_id
    ```
+   
+   **Security Note:** Never commit your `.env.local` file to version control. It's already included in `.gitignore`.
 
 5. **Add documents to the Documents folder**
    Place your PDF, DOCX, and TXT files in the `Documents/` directory.

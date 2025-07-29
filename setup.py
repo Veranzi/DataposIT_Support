@@ -119,12 +119,17 @@ def print_next_steps():
     print("1. Edit .env.local with your API keys:")
     print("   - GEMINI_API_KEY: Get from https://makersuite.google.com/app/apikey")
     print("   - FIREBASE_*: Get from your Firebase project console")
+    print("   - All credentials are now securely stored in environment variables")
     print("\n2. Add documents to the Documents/ folder")
     print("   - Supported formats: PDF, DOCX, TXT")
     print("\n3. Start the backend server:")
     print("   python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000")
     print("\n4. Open index.html in your browser")
     print("\n5. Start asking questions!")
+    print("\n🔒 Security Features:")
+    print("   - Firebase config loaded dynamically from backend")
+    print("   - API keys stored in environment variables")
+    print("   - .env.local excluded from version control")
     print("\n📚 For more information, see README.md")
 
 def main():

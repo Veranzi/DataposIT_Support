@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pytesseract
+pdf2image
+python-docx
+Pillow
+google-generativeai
+requests
+beautifulsoup4

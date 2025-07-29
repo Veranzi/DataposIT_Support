@@ -1,9 +1,9 @@
 fastapi
 uvicorn
-pytesseract
-pdf2image
-python-docx
-Pillow
-google-generativeai
+python-multipart
 requests
 beautifulsoup4
+python-docx
+PyPDF2
+google-generativeai
+python-dotenv

@@ -10,6 +10,10 @@ from trusted_sources import suggest_resources
 import os
 from pydantic import BaseModel
 import re
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = FastAPI()
 
@@ -25,6 +29,19 @@ app.add_middleware(
 # === Request Schema ===
 class AskRequest(BaseModel):
     question: str
+
+@app.get("/api/firebase-config")
+def get_firebase_config():
+    """Securely serve Firebase configuration from environment variables."""
+    return {
+        "apiKey": os.getenv("FIREBASE_API_KEY"),
+        "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN"),
+        "projectId": os.getenv("FIREBASE_PROJECT_ID"),
+        "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET"),
+        "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID"),
+        "appId": os.getenv("FIREBASE_APP_ID"),
+        "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID")
+    }
 
 @app.post("/ask/")
 def ask_ai(request: AskRequest):

@@ -236,48 +236,61 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, where, orderBy, limit, serverTimestamp, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
-        // Your Firebase configuration
-        const firebaseConfig = {
-  apiKey: "AIzaSyAofmfRJ2ptKzglc1C5QdiXbcJfMbAVyOE",
-  authDomain: "login-register-125ef.firebaseapp.com",
-  projectId: "login-register-125ef",
-  storageBucket: "login-register-125ef.appspot.com",
-  messagingSenderId: "528860686978",
-  appId: "1:528860686978:web:84864ad19a8cdc4107229b",
-  measurementId: "G-PS0YBMBGYT"
-};
+        // Load Firebase configuration dynamically from backend
+        async function initializeFirebase() {
+            try {
+                const response = await fetch('/api/firebase-config');
+                if (!response.ok) {
+                    throw new Error('Failed to load Firebase configuration');
+                }
+                
+                const firebaseConfig = await response.json();
+                
+                // Initialize Firebase
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                const db = getFirestore(app);
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+                // Make Firebase services available globally
+                window.firebaseAuth = auth;
+                window.firebaseDb = db;
+                window.firebaseAuthFunctions = {
+                    createUserWithEmailAndPassword,
+                    signInWithEmailAndPassword,
+                    signOut,
+                    onAuthStateChanged,
+                    updateProfile,
+                    GoogleAuthProvider,
+                    signInWithPopup
+                };
+                window.firebaseDbFunctions = {
+                    collection,
+                    addDoc,
+                    getDocs,
+                    doc,
+                    updateDoc,
+                    query,
+                    where,
+                    orderBy,
+                    limit,
+                    serverTimestamp,
+                    setDoc,
+                    getDoc
+                };
+                
+                console.log('Firebase initialized successfully');
+            } catch (error) {
+                console.error('Error initializing Firebase:', error);
+                // Show user-friendly error message
+                const errorDiv = document.createElement('div');
+                errorDiv.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #ef4444; color: white; padding: 16px; border-radius: 8px; z-index: 10000;';
+                errorDiv.textContent = 'Error loading Firebase configuration. Please check your environment setup.';
+                document.body.appendChild(errorDiv);
+            }
+        }
 
-        // Make Firebase services available globally
-        window.firebaseAuth = auth;
-        window.firebaseDb = db;
-        window.firebaseAuthFunctions = {
-            createUserWithEmailAndPassword,
-            signInWithEmailAndPassword,
-            signOut,
-            onAuthStateChanged,
-            updateProfile,
-            GoogleAuthProvider,
-            signInWithPopup
-        };
-        window.firebaseDbFunctions = {
-            collection,
-            addDoc,
-            getDocs,
-            doc,
-            updateDoc,
-            query,
-            where,
-            orderBy,
-            limit,
-            serverTimestamp,
-            setDoc,
-            getDoc
-        };
+        // Initialize Firebase when the page loads
+        initializeFirebase();
     </script>
     <script src="auth.js"></script>
     <script src="api.js"></script>

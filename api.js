@@ -1,12 +1,12 @@
 // Function to handle sending a question
 async function askQuestion(question) {
-    const formData = new FormData();
-    formData.append("question", question);
-
     try {
         const response = await fetch('http://localhost:8000/ask/', {
             method: 'POST',
-            body: formData,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ question: question }),
         });
 
         if (!response.ok) {

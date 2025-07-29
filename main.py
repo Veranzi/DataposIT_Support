@@ -3,6 +3,8 @@
 from fastapi import FastAPI, Form, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from document_parser import parse_documents
 from llm_utils import query_gemini
 from bc_query import query_business_central
@@ -25,6 +27,34 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve static files
+app.mount("/static", StaticFiles(directory="."), name="static")
+
+@app.get("/")
+async def read_index():
+    """Serve the main index.html file"""
+    return FileResponse("index.html")
+
+@app.get("/styles.css")
+async def read_styles():
+    """Serve the CSS file"""
+    return FileResponse("styles.css")
+
+@app.get("/script.js")
+async def read_script():
+    """Serve the main script file"""
+    return FileResponse("script.js")
+
+@app.get("/auth.js")
+async def read_auth():
+    """Serve the auth script file"""
+    return FileResponse("auth.js")
+
+@app.get("/api.js")
+async def read_api():
+    """Serve the API script file"""
+    return FileResponse("api.js")
 
 # === Request Schema ===
 class AskRequest(BaseModel):

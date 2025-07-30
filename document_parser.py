@@ -1,16 +1,6 @@
 import os
 import docx
 
-# Try to import OCR dependencies, but don't fail if they're not available
-try:
-    import pytesseract
-    from PIL import Image
-    from pdf2image import convert_from_path
-    OCR_AVAILABLE = True
-except ImportError:
-    OCR_AVAILABLE = False
-    print("Warning: OCR dependencies not available. PDF text extraction will be limited.")
-
 
 def parse_documents(folder_path):
     text_chunks = []
@@ -31,17 +21,8 @@ def parse_documents(folder_path):
         
         try:
             if file.endswith(".pdf"):
-                print(f"  Parsing PDF: {file}")
-                if OCR_AVAILABLE:
-                    pages = convert_from_path(path)
-                    for i, page in enumerate(pages):
-                        image_list.append(page)
-                        text = pytesseract.image_to_string(page)
-                        text_chunks.append(text)
-                        print(f"    Page {i+1}: {len(text)} characters")
-                else:
-                    print(f"    Skipping PDF {file} - OCR not available")
-                    continue
+                print(f"  Skipping PDF: {file} - OCR not available")
+                continue
 
             elif file.endswith(".docx"):
                 print(f"  Parsing DOCX: {file}")
@@ -89,7 +70,6 @@ def parse_documents(folder_path):
 
             elif file.endswith(".doc"):
                 print(f"  Skipping DOC file (not supported): {file}")
-                # You might need to install python-docx2txt for .doc files
                 continue
 
             else:
